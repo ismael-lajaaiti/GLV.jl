@@ -7,8 +7,6 @@ makedocs(
     format=Documenter.HTML()
 )
 
-deploydocs(
-    repo="github.com/ismael-lajaaiti/GLV.jl.git",
-    branch="gh-pages",
-    folder="docs"
+deploydocs(;
+    repo="github.com/ismael-lajaaiti/GLV.jl",
 )
