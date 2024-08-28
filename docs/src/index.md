@@ -3,11 +3,11 @@
 Welcome to the documentation for `GLV.jl`.
 
 
-```@contents
+```@autodocs
 Modules = [GLV]
 ```
 
-```julia
+```@example
 using GLV
-greet()
+GLV.greet()
 ```
