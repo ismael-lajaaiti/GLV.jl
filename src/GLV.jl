@@ -1,5 +1,8 @@
 module GLV
 
-greet() = print("Hello World!")
+using DifferentialEquations
 
-end # module GLV
+include("community.jl")
+include("solve.jl")
+
+end
