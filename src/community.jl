@@ -13,7 +13,7 @@ K = [1, 1]
 community = Community(A, r, K)
 ```
 
-See also [`solve`](@ref).
+See also [`solve`](@ref), [`simulate_pulse`](@ref).
 """
 mutable struct Community
     A::AbstractMatrix # Interactions.
@@ -25,6 +25,43 @@ mutable struct Community
     end
 end
 export Community
+
+"""
+    Base.rand(
+    ::Type{Community},
+    S::Int;
+    A_ij::Distribution=Normal(0, 1),
+    r_i::Union{Nothing,Distribution}=nothing,
+    K_i::Union{Nothing,Distribution}=nothing,
+)
+
+Genereate a random community with `S` species.
+Parameters are drawn from specified distributions.
+By default, species growth rates and carrying capacities are set to one.
+Species self-regulation, that is the diagonal of `A`, is set to -1.
+
+# Example
+
+```julia
+using Distributions
+c = rand(Community, 10; A_ij=Normal(-1, 0.1))
+```
+
+See also [`Community`](@ref).
+"""
+function Base.rand(
+    ::Type{Community},
+    S::Int;
+    A_ij::Distribution=Normal(0, 1),
+    r_i::Distribution=Normal(1, 0),
+    K_i::Distribution=Normal(1, 0),
+)
+    A = rand(A_ij, S, S)
+    A[diagind(A)] .= -1
+    r = rand(r_i, S)
+    K = rand(K_i, S)
+    Community(A, r, K)
+end
 
 """
     abundance(c::Community)

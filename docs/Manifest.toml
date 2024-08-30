@@ -1,8 +1,8 @@
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.10.4"
+julia_version = "1.10.5"
 manifest_format = "2.0"
-project_hash = "e4583c6adbd877a9f6ab4f8565837170cf4de407"
+project_hash = "3bcfaf6f42815299aebed4754110fd1bd169624d"
 
 [[deps.ADTypes]]
 git-tree-sha1 = "99a6f5d0ce1c7c6afdb759daa30226f71c54f6b0"
@@ -547,7 +547,7 @@ deps = ["Random"]
 uuid = "9fa8497b-333b-5362-9e8d-4d0656e87820"
 
 [[deps.GLV]]
-deps = ["DifferentialEquations", "Documenter"]
+deps = ["DifferentialEquations", "Distributions", "Documenter", "LinearAlgebra", "Random"]
 path = ".."
 uuid = "8ccb67e4-fbd9-4297-a0a7-642972bd2f90"
 version = "0.1.0"
@@ -1736,7 +1736,7 @@ version = "1.2.13+1"
 [[deps.libblastrampoline_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
-version = "5.8.0+1"
+version = "5.11.0+0"
 
 [[deps.nghttp2_jll]]
 deps = ["Artifacts", "Libdl"]

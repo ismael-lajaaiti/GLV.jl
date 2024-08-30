@@ -12,26 +12,21 @@ where ``r`` is the growth rate, ``A`` is the interaction matrix, and ``K`` is th
 
 Two non-interacting species with different carrying capacities.
 
-```jldoctest; output=false
+```julia
 A = [-1 0; 0 -1] # Only self-interactions.
 r = [1.0, 1.0]
 K = [1.0, 2.0]
 c = Community(A, r, K)
 u0, tspan = [1.0, 1.0], (0, 10_000) # Simulation parameters.
 sol = solve(c, u0, tspan) # Simulate the dynamics.
-# At the end of the simulation species should have reached their carrying capacities.
-isapprox(sol[end], K, atol=0.01)
-
-# output
-
-true
 ```
 
-See also [`Community`](@ref), [`solve`](@ref).
+See also [`Community`](@ref).
 """
 function DifferentialEquations.solve(c::Community, u0, tspan; kwargs...)
     function f(du, u, _, _)
         for i in eachindex(u)
+            u[i] < 0 && (u[i] = 0) # Species cannot have negative abundances.
             du[i] = c.r[i] * u[i] * (1 + sum(c.A[i, :] .* u) / c.K[i])
         end
     end

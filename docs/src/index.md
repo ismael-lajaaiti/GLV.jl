@@ -14,7 +14,7 @@ The package can be installed with
 using Pkg; Pkg.add("GLV")
 ```
 
-# Docstrings
+## Docstrings
 
 ```@autodocs
 Modules = [GLV]
