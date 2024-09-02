@@ -9,5 +9,6 @@ include("community.jl")
 include("solve.jl")
 include("perturbations.jl")
 include("utils.jl")
+include("species-stability.jl")
 
 end

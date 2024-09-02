@@ -12,10 +12,11 @@ For detailed usage and examples, please refer to the [documentation](https://ism
 ## TODO
 
 - [ ] Implement functions from the cavity method to predict community properties.
-- [ ] Implement functions for stability analysis at the community level.
-- [ ] Idem but at the species level.
+- [ ] Implement species sensitivity to press
+- [ ] Implement species sensitivity to extinction
 - [ ] Add a dispersion term in the model.
-- [ ] Add perturbations functions (noise, extinction, press, pulse).
 - [ ] Create package logo.
 - [ ] Publish the package in the Julia registry.
+- [x] Add perturbations functions (noise, extinction, press, pulse).
+- [x] Implement species reactivity
 

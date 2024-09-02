@@ -55,11 +55,16 @@ function Base.rand(
     A_ij::Distribution=Normal(0, 1),
     r_i::Distribution=Normal(1, 0),
     K_i::Distribution=Normal(1, 0),
+    interaction::Symbol=:default,
 )
-    A = rand(A_ij, S, S)
-    A[diagind(A)] .= -1
+    @assert interaction ∈ [:default, :core]
     r = rand(r_i, S)
     K = rand(K_i, S)
+    A = rand(A_ij, S, S)
+    A[diagind(A)] .= -1
+    if interaction == :core
+        A = Diagonal(K) * A * Diagonal(1 ./ K)
+    end
     Community(A, r, K)
 end
 
@@ -123,3 +128,24 @@ function relative_yield(c::Community)
     abundance(c) ./ c.K
 end
 export relative_yield
+
+"""
+    core_interactions(c::Community)
+
+Compute the 'core' interactions of the community.
+Core interactions are the species interactions rescaled
+in a relevant manner to study species coexistence.
+Formally, the core interactions write
+```math
+b_{ij} = a_{ij} K_i / K_j
+```
+
+where ``a_{ij}`` is the interaction from species ``j`` to species ``i``.
+
+For more information refer to [Barbier and Arnoldi 2017](https://doi.org/10.1101/147728).
+"""
+function core_interactions(c::Community)
+    A, K = c.A, c.K
+    Diagonal(1 ./ K) * A * Diagonal(K)
+end
+export core_interactions
