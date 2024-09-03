@@ -149,3 +149,14 @@ function core_interactions(c::Community)
     Diagonal(1 ./ K) * A * Diagonal(K)
 end
 export core_interactions
+
+"""
+    richness(c::Community)
+
+Species richness of the community `c`.
+"""
+function richness(c::Community)
+    @assert length(c.r) == length(c.K) == size(c.A, 1) == size(c.A, 2)
+    length(c.r)
+end
+export richness
