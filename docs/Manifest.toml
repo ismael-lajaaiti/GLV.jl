@@ -2,7 +2,7 @@
 
 julia_version = "1.10.5"
 manifest_format = "2.0"
-project_hash = "e44e022b107aa03c60e8bda5b002affc6d43b770"
+project_hash = "5b5642fe0cbba58acf300da4bf87cc0234c203f7"
 
 [[deps.ADTypes]]
 git-tree-sha1 = "99a6f5d0ce1c7c6afdb759daa30226f71c54f6b0"
@@ -761,7 +761,7 @@ deps = ["Random"]
 uuid = "9fa8497b-333b-5362-9e8d-4d0656e87820"
 
 [[deps.GLV]]
-deps = ["DifferentialEquations", "Distributions", "Documenter", "LinearAlgebra", "Random"]
+deps = ["DifferentialEquations", "Distributions", "Documenter", "LinearAlgebra", "NonlinearSolve", "QuadGK", "Random"]
 path = ".."
 uuid = "8ccb67e4-fbd9-4297-a0a7-642972bd2f90"
 version = "0.1.0"
@@ -1217,6 +1217,12 @@ version = "2.33.0"
     Metal = "dde4c033-4e86-420c-a63e-0dd931031962"
     Pardiso = "46dd5b70-b6fb-5a00-ae2d-e8fea33afaf2"
     RecursiveArrayTools = "731186ca-8d62-57ce-b412-fbd966d074cd"
+
+[[deps.Literate]]
+deps = ["Base64", "IOCapture", "JSON", "REPL"]
+git-tree-sha1 = "eef2e1fc1dc38af90a18eb16e519e06d1fd10c2a"
+uuid = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
+version = "2.19.0"
 
 [[deps.LogExpFunctions]]
 deps = ["DocStringExtensions", "IrrationalConstants", "LinearAlgebra"]

@@ -15,7 +15,6 @@ For detailed usage and examples, please refer to the [documentation](https://ism
 - [ ] Implement species sensitivity to press
 - [ ] Implement species sensitivity to extinction
 - [ ] Add a dispersion term in the model.
-- [ ] Create package logo.
 - [ ] Publish the package in the Julia registry.
 - [x] Implement functions from the cavity method to predict community properties.
 - [x] Add perturbations functions (noise, extinction, press, pulse).
