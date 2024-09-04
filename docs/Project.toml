@@ -2,6 +2,7 @@
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+DocumenterCitations = "daee34ce-89f3-4625-b898-19384cb65244"
 GLV = "8ccb67e4-fbd9-4297-a0a7-642972bd2f90"
 Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"

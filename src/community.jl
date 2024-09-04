@@ -31,9 +31,10 @@ export Community
     ::Type{Community},
     S::Int;
     A_ij::Distribution=Normal(0, 1),
-    r_i::Union{Nothing,Distribution}=nothing,
-    K_i::Union{Nothing,Distribution}=nothing,
-)
+    r_i::Distribution=Normal(1, 0),
+    K_i::Distribution=Normal(1, 0),
+    interaction::Symbol=:default,
+    )
 
 Genereate a random community with `S` species.
 Parameters are drawn from specified distributions.
