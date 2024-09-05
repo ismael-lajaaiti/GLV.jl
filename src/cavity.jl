@@ -30,8 +30,9 @@ function cavity_system(x, p)
     mu, sigma, gamma, K_std, K_mean = p
     phi, N_mean, N2_mean, v = x
     u_hat = 1 - phi * gamma * sigma^2 * v
+    abs(u_hat) <= 1e-5 && (u_hat = 1e-5)
     N0_mean = (K_mean + phi * mu * N_mean) / u_hat
-    N0_var = K_std^2 + sigma^2 * phi * N2_mean / u_hat^2
+    N0_var = (K_std^2 + sigma^2 * phi * N2_mean) / u_hat^2
     N0_var <= 1e-5 && (N0_var = 1e-5)
     P(N0) = exp(-(N0 - N0_mean)^2 / N0_var) / sqrt(pi * N0_var)
     [
@@ -44,7 +45,7 @@ end
 
 
 """
-    cavity_predictions(mu, sigma, gamma, K_std; K_mean=1)
+    cavity_predictions(mu, sigma, gamma, K_std; K_mean=1, kwargs...)
 
 Predict the following community properties using cavity method:
 - `phi`: the fraction of surviving species
@@ -54,6 +55,8 @@ Predict the following community properties using cavity method:
 
 If the solver doesn't converge, all returned values are set to zero.
 This usually means that the community is expected to collapse or explode.
+
+Keyword arguments of NonlinearSolve.solve can be directly passed to this function.
 
 # Example
 
@@ -72,11 +75,11 @@ cavity_predictions(c)
 
 See also [`cavity_parameters`](@ref).
 """
-function cavity_predictions(mu, sigma, gamma, K_std; K_mean=1)
+function cavity_predictions(mu, sigma, gamma, K_std; K_mean=1, kwargs...)
     p = (mu, sigma, gamma, K_std, K_mean)
     u0 = [1, 1, 1, 1]
     prob = NonlinearProblem(cavity_system, u0, p)
-    sol = NonlinearSolve.solve(prob)
+    sol = NonlinearSolve.solve(prob; kwargs...)
     if sol.retcode == ReturnCode.Success
         phi, N_mean, N2_mean, v = sol.u
     else

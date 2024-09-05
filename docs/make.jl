@@ -3,11 +3,11 @@ using Documenter
 using DocumenterCitations
 using Literate
 
-# # Generate markdown files from julia scripts.
-# Literate.markdown(
-#     joinpath(@__DIR__, "src", "cavity.jl"), joinpath(@__DIR__, "src");
-#     credit=false
-# )
+# Generate markdown files from julia scripts.
+Literate.markdown(
+    joinpath(@__DIR__, "src", "cavity.jl"), joinpath(@__DIR__, "src");
+    credit=false
+)
 
 DocMeta.setdocmeta!(GLV, :DocTestSetup, :(using GLV); recursive=true)
 
