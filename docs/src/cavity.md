@@ -45,7 +45,7 @@ N0 = fill(1, S)
 tspan = (0, 1000)
 ````
 
-Then we can run our simulation, and compare the results with the cavity method.
+Then we can run our simulations and store the generated data.
 
 ````@example cavity
 df = DataFrame(; simulation=Float64[], prediction=Float64[], parameter=Symbol[])
@@ -64,7 +64,7 @@ for mu in mu_values
 end
 ````
 
-And here are the results.
+Finally, we can plot the results.
 
 ````@example cavity
 fig = Figure(size=(500, 300));
@@ -78,4 +78,9 @@ for (i, param) in enumerate(unique(df.parameter))
 end
 fig
 ````
+
+We can that the predictions are very close to the simulations.
+
+For more details about the cavity method,
+you can check these [References](@ref).
 

@@ -1,7 +1,7 @@
 """
     Community(A, r, K)
 
-Create a community with interaction matrix `A`, 
+Create a community with interaction matrix `A`,
 growth rates `r`, and carrying capacities `K`.
 
 # Example
@@ -45,7 +45,7 @@ Species self-regulation, that is the diagonal of `A`, is set to -1.
 
 ```julia
 using Distributions
-c = rand(Community, 10; A_ij=Normal(-1, 0.1))
+c = rand(Community, 10; A_ij = Normal(-1, 0.1))
 ```
 
 See also [`Community`](@ref).
@@ -53,10 +53,10 @@ See also [`Community`](@ref).
 function Base.rand(
     ::Type{Community},
     S::Int;
-    A_ij::Distribution=Normal(0, 1),
-    r_i::Distribution=Normal(1, 0),
-    K_i::Distribution=Normal(1, 0),
-    interaction::Symbol=:default,
+    A_ij::Distribution = Normal(0, 1),
+    r_i::Distribution = Normal(1, 0),
+    K_i::Distribution = Normal(1, 0),
+    interaction::Symbol = :default,
 )
     @assert interaction ∈ [:default, :core]
     r = rand(r_i, S)
@@ -94,9 +94,7 @@ true
 
 See also [`relative_yield`](@ref)
 """
-function abundance(c::Community)
-    -inv(c.A) * c.K
-end
+abundance(c::Community) = -inv(c.A) * c.K
 export abundance
 
 """
@@ -125,9 +123,7 @@ true
 
 See also [`abundance`](@ref).
 """
-function relative_yield(c::Community)
-    abundance(c) ./ c.K
-end
+relative_yield(c::Community) = abundance(c) ./ c.K
 export relative_yield
 
 """
@@ -137,6 +133,7 @@ Compute the 'core' interactions of the community.
 Core interactions are the species interactions rescaled
 in a relevant manner to study species coexistence.
 Formally, the core interactions write
+
 ```math
 b_{ij} = a_{ij} K_i / K_j
 ```
@@ -161,3 +158,18 @@ function richness(c::Community)
     length(c.r)
 end
 export richness
+
+"""
+    assemble(c::Community; u0 = ones(richness(c)), tspan = (0, 10_000))
+
+Assemble the pool of species in the community `c`.
+Return the subcommunity of species that are alive.
+`u0` is the initial condition for the simulation.
+`tspan` defines the duration of the simulation.
+"""
+function assemble(c::Community; u0 = ones(richness(c)), tspan = (0, 10_000))
+    sol = solve(c, u0, tspan)
+    alive = sol.u[end] .> 1e-6
+    Community(c.A[alive, alive], c.r[alive], c.K[alive])
+end
+export assemble
