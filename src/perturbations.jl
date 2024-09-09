@@ -12,16 +12,16 @@ of species equilibrium abundances.
 ```julia
 using Distributions
 S = 5 # Number of species.
-c = rand(Community, S; A_ij=Normal(0, 0.1))
+c = rand(Community, S; A_ij = Normal(0, 0.1))
 x = rand(Normal(-2, 0.1), S)
 u = simulate_pulse(c, x, (0, 100))
 ```
 
 See also [`solve`](@ref).
 """
-function simulate_pulse(c::Community, x, tspan)
+function simulate_pulse(c::Community, x, tspan; kwargs...)
     N_eq = abundance(c)
-    solve(c, N_eq + x, tspan)
+    solve(c, N_eq + x, tspan; kwargs...)
 end
 export simulate_pulse
 
@@ -35,16 +35,16 @@ of the species of indices `idx` for the time span `tspan`.
 
 ```julia
 using Distributions
-c = rand(Community, 5; A_ij=Normal(0, 0.1))
+c = rand(Community, 5; A_ij = Normal(0, 0.1))
 simulate_extinctions(c, [1, 3], (0, 100)) # Species 1 and 3 go extinct.
 ```
 
 See also [`solve`](@ref), [`simulate_pulse`](@ref).
 """
-function simulate_extinctions(c::Community, idx, tspan)
+function simulate_extinctions(c::Community, idx, tspan; kwargs...)
     N0 = abundance(c) # Start with species equilibrium abundances...
     N0[idx] .= 0 # ... except for the extinct species.
-    solve(c, N0, tspan)
+    solve(c, N0, tspan; kwargs...)
 end
 export simulate_extinctions
 
@@ -59,7 +59,7 @@ The species carrying capacities after the perturbation are given by `K_new`.
 
 ```julia
 using Distributions
-c = rand(Community, 5; A_ij=Normal(0, 0.1))
+c = rand(Community, 5; A_ij = Normal(0, 0.1))
 K_new = c.K .- [0.9, 0, 0, 0, 0] # Lower the carrying capacity of the first species.
 simulate_press(c, K_new, (0, 100))
 ```
@@ -81,8 +81,8 @@ The species equilibrium abundances are given by [`abundance`](@ref).
 
 See also [`solve`](@ref), [`simulate_pulse`](@ref), [`simulate_extinctions`](@ref), [`simulate_press`](@ref).
 """
-function simulate_noise(c::Community, noise!::Function, tspan)
+function simulate_noise(c::Community, noise!::Function, tspan; kwargs...)
     N0 = abundance(c)
-    solve(c, N0, tspan, noise!)
+    solve(c, N0, tspan, noise!; kwargs...)
 end
 export simulate_noise

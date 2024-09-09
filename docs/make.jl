@@ -13,6 +13,7 @@ function generate_md(filename)
 end
 generate_md("cavity.jl")
 generate_md("functional-extinctions.jl")
+generate_md("response-to-pulse.jl")
 
 DocMeta.setdocmeta!(GLV, :DocTestSetup, :(using GLV); recursive = true)
 
@@ -25,6 +26,7 @@ makedocs(;
     pages = [
         "Home" => "index.md",
         "The cavity method" => "cavity.md",
+        "Interactions structure species responses" => "response-to-pulse.md",
         "Functional extinctions" => "functional-extinctions.md",
         "References" => "references.md",
     ],

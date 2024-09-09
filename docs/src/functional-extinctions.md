@@ -128,7 +128,7 @@ Neq = abundance(c_new)
 N_EEP = Neq .+ delta_N
 ````
 
-We see that the EEP size of some species is non-zero.
+We see that all EEP sizes are not zeros.
 This means that some species are functionally necessary for the communtiy.
 
 Finally, we can plot the EEP size of each species against their initial equilibrium abundance.
