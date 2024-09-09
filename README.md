@@ -11,11 +11,12 @@ For detailed usage and examples, please refer to the [documentation](https://ism
 
 ## TODO
 
-- [ ] Check and document implementation of the cavity predictions
+- [ ] Document species sensitivity to pulse (controlled by relative yield)
 - [ ] Implement species sensitivity to press
 - [ ] Implement species sensitivity to extinction
 - [ ] Add a dispersion term in the model.
 - [ ] Publish the package in the Julia registry.
+- [x] Check and document implementation of the cavity predictions
 - [x] Implement functions from the cavity method to predict community properties.
 - [x] Add perturbations functions (noise, extinction, press, pulse).
 - [x] Implement species reactivity
