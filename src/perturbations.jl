@@ -49,7 +49,7 @@ end
 export simulate_extinctions
 
 """
-    simulate_press(c::Community, K_new, tspan)
+    simulate_press(c::Community, K_new, tspan; kwargs...)
 
 Simulate the dynamics of the community `c` following a press perturbation
 The press perturbation is modeled by a change in the carrying capacities.
@@ -66,10 +66,11 @@ simulate_press(c, K_new, (0, 100))
 
 See also [`solve`](@ref), [`simulate_pulse`](@ref), [`simulate_extinctions`](@ref).
 """
-function simulate_press(c::Community, K_new, tspan)
+function simulate_press(c::Community, K_new, tspan; kwargs...)
     N0 = abundance(c)
-    c.K .= K_new
-    solve(c, N0, tspan)
+    c_new = deepcopy(c)
+    c_new.K = K_new
+    solve(c_new, N0, tspan; kwargs...)
 end
 export simulate_press
 
