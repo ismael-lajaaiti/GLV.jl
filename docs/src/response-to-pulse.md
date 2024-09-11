@@ -104,3 +104,5 @@ scatter!(df.abundance, df.response_mean)
 fig
 ````
 
+If you want to learn more about this, I invite you to read the study [lajaaiti2024](@cite).
+

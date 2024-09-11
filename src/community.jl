@@ -43,9 +43,32 @@ Species self-regulation, that is the diagonal of `A`, is set to -1.
 
 # Example
 
+Here is a minimal example, where we randomly draw interactions strengths
+in a normal distribution.
+
 ```julia
 using Distributions
 c = rand(Community, 10; A_ij = Normal(-1, 0.1))
+```
+
+Interactions can also be drawn in a multivariate distribution.
+This allows to generate correlated interactions between pair of species.
+
+```julia
+using Distributions
+S = 100
+μ = [-1, -2]
+σ = [0.2, 0.1]
+ρ = -0.5 # Correlation between A_ij and A_ji.
+Σ = [σ[1]^2 ρ*σ[1]*σ[2]; ρ*σ[1]*σ[2] σ[2]^2] # Covariance matrix.
+c = rand(Community, S; A_ij = MvNormal(μ, Σ))
+
+# Check that the interaction matrix is correct.
+A_ij = [c.A[i, j] for i in 1:S for j in i+1:S]
+A_ji = [c.A[j, i] for i in 1:S for j in i+1:S]
+mean(A_ij), mean(A_ji)
+std(A_ij), std(A_ji)
+cor(A_ij, A_ji)
 ```
 
 See also [`Community`](@ref).
@@ -61,7 +84,20 @@ function Base.rand(
     @assert interaction ∈ [:default, :core]
     r = rand(r_i, S)
     K = rand(K_i, S)
-    A = rand(A_ij, S, S)
+    multivariate_dist = typeof(A_ij) <: MultivariateDistribution
+    if !multivariate_dist
+        A = rand(A_ij, S, S)
+    else
+        n = round(Int, S * (S - 1) / 2)
+        A_elements = rand(A_ij, n)
+        A = zeros(S, S)
+        k = 1
+        for i in 1:S, j in (i+1):S
+            A[i, j] = A_elements[1, k]
+            A[j, i] = A_elements[2, k]
+            k += 1
+        end
+    end
     A[diagind(A)] .= -1
     if interaction == :core
         A = Diagonal(K) * A * Diagonal(1 ./ K)
