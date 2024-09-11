@@ -16,26 +16,26 @@ c = rand(
 )
 N_eq = abundance(c)
 eta_eq = relative_yield(c)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">30-element Vector{Float64}:
- 0.5683616417262094
- 0.5044647597437871
- 0.5903872847001225
- 0.49909520819176406
- 0.752658451640971
- 0.5700535763854762
- 0.47182488254129445
- 0.5110607835251811
- 0.3916495242571943
- 0.5418132223355325
+ 0.643548699434424
+ 0.5876162549950852
+ 0.44837204423304516
+ 0.3920518881424203
+ 0.4435146918940737
+ 0.44987425206883064
+ 0.48024081607591823
+ 0.47159240352410486
+ 0.26209032681881433
+ 0.5822083998571467
  ⋮
- 0.5481093843050476
- 0.5125991412571747
- 0.3879480380906623
- 0.516876475145059
- 0.48499760197117064
- 0.4790930994910111
- 0.5618675675229576
- 0.5543225085805519
- 0.3851082770967621</code></pre><p>We can check the equilibrium of the community, and ensure that all species have a positive abundance.</p><p>Next, we will perform a series of random pulse perturbations and record each species responses. But before that, let&#39;s define how we quantify species responses to perturbations.</p><pre><code class="language-julia hljs">&quot;&quot;&quot;
+ 0.6642549589246615
+ 0.4921979803916618
+ 0.4497971711720337
+ 0.4582634236239294
+ 0.4033502048288633
+ 0.6233452289566278
+ 0.4236479671739048
+ 0.5248687641775089
+ 0.48807511678151977</code></pre><p>We can check the equilibrium of the community, and ensure that all species have a positive abundance.</p><p>Next, we will perform a series of random pulse perturbations and record each species responses. But before that, let&#39;s define how we quantify species responses to perturbations.</p><pre><code class="language-julia hljs">&quot;&quot;&quot;
     species_responses(sol)
 
 Quantify how strongly each species responds to the simulated perturbation,
@@ -58,26 +58,26 @@ for _ in 1:n_pulses
 end</code></pre><p>We then average the species responses over all the pulse realizations, and add the species abundances and relative yields to the dataframe. This last step is not necessary, but it will allow us to plot the results.</p><pre><code class="language-julia hljs">df = combine(groupby(df, :species), :response =&gt; mean)
 df.abundance = N_eq
 df.relative_yield = eta_eq</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">30-element Vector{Float64}:
- 0.5683616417262094
- 0.5044647597437871
- 0.5903872847001225
- 0.49909520819176406
- 0.752658451640971
- 0.5700535763854762
- 0.47182488254129445
- 0.5110607835251811
- 0.3916495242571943
- 0.5418132223355325
+ 0.643548699434424
+ 0.5876162549950852
+ 0.44837204423304516
+ 0.3920518881424203
+ 0.4435146918940737
+ 0.44987425206883064
+ 0.48024081607591823
+ 0.47159240352410486
+ 0.26209032681881433
+ 0.5822083998571467
  ⋮
- 0.5481093843050476
- 0.5125991412571747
- 0.3879480380906623
- 0.516876475145059
- 0.48499760197117064
- 0.4790930994910111
- 0.5618675675229576
- 0.5543225085805519
- 0.3851082770967621</code></pre><p>Lastly, we can plot the results. We see that relative yield, instead of species abundance, strongly control the species responses to pulse perturbations. Specifically, species with low relative yield are the species that are the most sensitive to pulse perturbations.</p><pre><code class="language-julia hljs">fig = Figure();
+ 0.6642549589246615
+ 0.4921979803916618
+ 0.4497971711720337
+ 0.4582634236239294
+ 0.4033502048288633
+ 0.6233452289566278
+ 0.4236479671739048
+ 0.5248687641775089
+ 0.48807511678151977</code></pre><p>Lastly, we can plot the results. We see that relative yield, instead of species abundance, strongly control the species responses to pulse perturbations. Specifically, species with low relative yield are the species that are the most sensitive to pulse perturbations.</p><pre><code class="language-julia hljs">fig = Figure();
 ax1 = Axis(
     fig[1, 1];
     ylabel = &quot;Species response to pulse&quot;,
@@ -87,4 +87,4 @@ ax1 = Axis(
 scatter!(df.relative_yield, df.response_mean)
 ax2 = Axis(fig[1, 2]; xlabel = &quot;Species abundance&quot;, yscale = log10)
 scatter!(df.abundance, df.response_mean)
-fig</code></pre><img src="ccdb8e97.png" alt="Example block output"/><p>If you want to learn more about this, I invite you to read the study (<a href="../references/#lajaaiti2024">Lajaaiti <em>et al.</em>, 2024</a>).</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../cavity/">« The cavity method</a><a class="docs-footer-nextpage" href="../functional-extinctions/">Functional extinctions »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.6.0 on <span class="colophon-date" title="Wednesday 11 September 2024 08:26">Wednesday 11 September 2024</span>. Using Julia version 1.10.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+fig</code></pre><img src="4e7031c8.png" alt="Example block output"/><p>If you want to learn more about this, I invite you to read the study (<a href="../references/#lajaaiti2024">Lajaaiti <em>et al.</em>, 2024</a>).</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../cavity/">« The cavity method</a><a class="docs-footer-nextpage" href="../functional-extinctions/">Functional extinctions »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.6.0 on <span class="colophon-date" title="Wednesday 11 September 2024 11:33">Wednesday 11 September 2024</span>. Using Julia version 1.10.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
