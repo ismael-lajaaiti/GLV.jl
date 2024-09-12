@@ -15,13 +15,15 @@ using LinearAlgebra
 using DataFrames
 using Distributions
 using CairoMakie
+using Random
 set_theme!(theme_minimal())
+Random.seed!(123)
 
 # Then, let's create a random competitive community.
 
 S = 30
 mu, sigma = -1, 0.2
-K_std = 0.3
+K_std = 0.4
 c = rand(
     Community,
     S;
@@ -85,6 +87,7 @@ ax1 = Axis(
 )
 scatter!(df.relative_yield, df.response_mean)
 ax2 = Axis(fig[1, 2]; xlabel = "Species abundance", yscale = log10)
+hideydecorations!(ax2)
 scatter!(df.abundance, df.response_mean)
 fig
 

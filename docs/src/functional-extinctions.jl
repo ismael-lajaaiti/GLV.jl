@@ -15,7 +15,10 @@ using GLV
 using LinearAlgebra
 using Distributions
 using CairoMakie
+using Random
 set_theme!(theme_minimal())
+Random.seed!(123)
+
 
 S = 30
 mu, sigma = -1 / S, 0.2 / sqrt(S)
@@ -47,7 +50,7 @@ all(abundance(c) .> 0)
 
 Neq = abundance(c)
 epsilon = zeros(S)
-for j = 1:S
+for j in 1:S
     eps = -abundance(c) ./ inv(c.A)[:, j]
     epsilon[j] = minimum(eps[eps.>0])
 end
@@ -100,7 +103,7 @@ S_new = richness(c_new) # Smaller than the initial richness S.
 #-
 
 epsilon = zeros(S_new)
-for j = 1:S_new
+for j in 1:S_new
     eps = -abundance(c_new) ./ inv(c_new.A)[:, j]
     epsilon[j] = minimum(eps[eps.>0])
 end

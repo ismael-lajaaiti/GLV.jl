@@ -57,12 +57,12 @@ solve(c, u0, tspan, white_noise!)
 ```
 """
 function solve(c::Community, u0, tspan, noise!::Function; kwargs...)
-    f!(du, u, _, _) =
+    f!(du, u, c, _) =
         for i in eachindex(u)
             u[i] < 0 && (u[i] = 0)
             du[i] = c.r[i] * u[i] * (1 + sum(c.A[i, :] .* u) / c.K[i])
         end
-    prob = SDEProblem(f!, noise!, u0, tspan)
+    prob = SDEProblem(f!, noise!, u0, tspan, c)
     DifferentialEquations.solve(prob; kwargs...)
 end
 
