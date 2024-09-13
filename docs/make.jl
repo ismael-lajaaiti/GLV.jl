@@ -1,5 +1,6 @@
 using GLV
 using Documenter
+using DocumenterVitepress
 using DocumenterCitations
 using Literate
 
@@ -22,15 +23,25 @@ bib = CitationBibliography(joinpath(@__DIR__, "src", "refs.bib"); style = :autho
 makedocs(;
     sitename = "GLV.jl",
     modules = [GLV],
-    format = Documenter.HTML(; prettyurls = get(ENV, "CI", nothing) == "true"),
+    format = MarkdownVitepress(; repo = "https://github.com/ismael-lajaaiti/GLV.jl"),
     pages = [
         "Home" => "index.md",
-        "The cavity method" => "cavity.md",
-        "Interactions structure species responses" => "response-to-pulse.md",
-        "Functional extinctions" => "functional-extinctions.md",
+        "Getting started" => "getting-started.md",
+        "Examples" => [
+            "The cavity method" => "cavity.md",
+            "Interactions structure species responses" => "response-to-pulse.md",
+            "Functional extinctions" => "functional-extinctions.md",
+        ],
         "References" => "references.md",
     ],
     plugins = [bib],
 )
 
-deploydocs(; repo = "github.com/ismael-lajaaiti/GLV.jl")
+deploydocs(;
+    repo = "github.com/ismael-lajaaiti/GLV.jl",
+    target = "build", # this is where Vitepress stores its output
+    devbranch = "main",
+    branch = "gh-pages",
+    push_preview = true,
+)
+

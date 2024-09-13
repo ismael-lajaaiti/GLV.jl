@@ -37,16 +37,16 @@ tspan = (0, 1000)
 
 # Then we can run our simulations and store the generated data.
 
-df = DataFrame(; simulation=Float64[], prediction=Float64[], parameter=Symbol[])
+df = DataFrame(; simulation = Float64[], prediction = Float64[], parameter = Symbol[])
 for mu in mu_values
-    c = rand(Community, S; A_ij=Normal(mu / S, sigma / sqrt(S)), K_i=Normal(1, K_std))
+    c = rand(Community, S; A_ij = Normal(mu / S, sigma / sqrt(S)), K_i = Normal(1, K_std))
     sol = solve(c, N0, tspan)
     N = sol.u[end][sol.u[end].>0]
     N_mean = mean(N)
     N2_mean = mean(N .^ 2)
     simulation = (; N_mean, N2_mean)
     p = cavity_predictions(c)
-    prediction = (N_mean=p.N_mean * p.phi, N2_mean=p.N2_mean * p.phi)
+    prediction = (N_mean = p.N_mean * p.phi, N2_mean = p.N2_mean * p.phi)
     for param in [:N_mean, :N2_mean]
         push!(df, (simulation[param], prediction[param], param))
     end
@@ -54,18 +54,18 @@ end
 
 # Finally, we can plot the results.
 
-fig = Figure(size=(500, 300));
-title_list = (N_mean="Mean abundance", N2_mean="Mean abundance squared")
+fig = Figure(; size = (500, 300));
+title_list = (N_mean = "Mean abundance", N2_mean = "Mean abundance squared")
 for (i, param) in enumerate(unique(df.parameter))
     ylabel = i == 1 ? "Prediction" : ""
     title = title_list[param]
-    ax = Axis(fig[1, i]; xlabel="Simulation", ylabel, title)
+    ax = Axis(fig[1, i]; xlabel = "Simulation", ylabel, title)
     scatter!(df[df.parameter.==param, :simulation], df[df.parameter.==param, :prediction])
-    ablines!(0, 1; color=:black)
+    ablines!(0, 1; color = :black)
 end
 fig
 
 # We can that the predictions are very close to the simulations.
 #
 # For more details about the cavity method,
-# you can check these [References](@ref).
+# you can check [bunin2017](@cite) or [barbier2018](@cite).
