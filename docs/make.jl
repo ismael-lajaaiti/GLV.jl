@@ -32,6 +32,7 @@ makedocs(;
             "Interactions structure species responses" => "response-to-pulse.md",
             "Functional extinctions" => "functional-extinctions.md",
         ],
+        "Docstrings" => "docstrings.md",
         "References" => "references.md",
     ],
     plugins = [bib],
