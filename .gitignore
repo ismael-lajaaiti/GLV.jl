@@ -2,3 +2,4 @@ docs/build/
 node_modules
 .DS_Store
 /docs/src/.DS_Store
+docs/package-lock.json
