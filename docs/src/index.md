@@ -5,8 +5,8 @@ layout: home
 
 hero:
   name: "GLV.jl"
-  # text: "Generalized Lotka-Volterra"
-  tagline: A Julia package to simulate Generalized Lotka-Volterra models
+  text: "Lotka-Volterra models in Julia"
+  tagline: A high performance and easy to use library for simulating Generalized Lotka-Volterra models
   # image:
   #   src: /logo.png
   #   alt: DocumenterVitepress
@@ -39,11 +39,17 @@ features:
 
 <div class="vp-doc" style="width:80%; margin:auto">
 
-<h1> What is GLV.jl? </h1>
+<h1> Widely acclaimed </h1>
 
-GLV is a pure Julia library which simulates the dynamics of Generalized Lotka-Volterra models.
+<blockquote style="font-style: italic; border-left: 4px solid #fff; padding-left: 1em;">
+  "Who knew my equations could run this fast?"  
+  <br>- <strong>Alfred J. Lotka</strong>
+</blockquote>
 
-It is designed to be used in fast, well-integrated with DifferentialEquations, and provide predictions using the cavity method.
+<blockquote style="font-style: italic; border-left: 4px solid #fff; padding-left: 1em;">
+  "Finally, a tool that matches the speed of my predator-prey equations. Bravo!"  
+  <br>- <strong>Vito Volterra</strong>
+</blockquote>
 
 </div>
 ```

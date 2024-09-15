@@ -13,6 +13,8 @@ For detailed usage and examples, please refer to the [documentation](https://ism
 
 - [ ] Implement species sensitivity to press
 - [ ] Implement species sensitivity to extinction
+- [ ] Implement jacobian, reactivity, resilience, etc.
+- [ ] Document stability analysis at the community
 - [ ] Add a dispersion term in the model.
 - [ ] Publish the package in the Julia registry.
 - [x] Document species sensitivity to pulse (controlled by relative yield)
