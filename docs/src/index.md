@@ -42,12 +42,12 @@ features:
 <h1> Widely acclaimed </h1>
 
 <blockquote style="font-style: italic; border-left: 4px solid #fff; padding-left: 1em;">
-  "Who knew my equations could run this fast?"  
+  "Faster than light."  
   <br>- <strong>Alfred J. Lotka</strong>
 </blockquote>
 
 <blockquote style="font-style: italic; border-left: 4px solid #fff; padding-left: 1em;">
-  "Finally, a tool that matches the speed of my predator-prey equations. Bravo!"  
+  "Who knew my equations could run this fast? Bravo!"  
   <br>- <strong>Vito Volterra</strong>
 </blockquote>
 

@@ -27,6 +27,7 @@ makedocs(;
     pages = [
         "Home" => "index.md",
         "Getting started" => "getting-started.md",
+        "For R users" => "for-r-users.md",
         "Examples" => [
             "The cavity method" => "cavity.md",
             "Interactions structure species responses" => "response-to-pulse.md",
