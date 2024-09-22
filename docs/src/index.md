@@ -7,9 +7,9 @@ hero:
   name: "GLV.jl"
   text: "Lotka-Volterra models in Julia"
   tagline: A high performance and easy to use library for simulating Generalized Lotka-Volterra models
-  # image:
-  #   src: /logo.png
-  #   alt: DocumenterVitepress
+  image:
+    src: /logo.png
+    alt: GLV
   actions:
     - theme: brand
       text: Getting Started
