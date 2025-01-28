@@ -19,12 +19,18 @@ mutable struct Community
     A::AbstractMatrix # Interactions.
     r::AbstractVector # Growth rates.
     K::AbstractVector # Carrying capacities.
-    function Community(A, r, K)
-        @assert size(A, 1) == size(A, 2) == length(r) == length(K)
-        new(A, r, K)
+    u::AbstractVector # Can species grow by themselves.
+    function Community(A, r, K, u)
+        @assert size(A, 1) == size(A, 2) == length(r) == length(K) == length(u)
+        new(A, r, K, u)
     end
 end
 export Community
+
+function Community(A, r, K)
+    u = fill(1, length(r))
+    Community(A, r, K, u)
+end
 
 """
     Base.rand(
@@ -80,6 +86,7 @@ function Base.rand(
     r_i::Distribution = Normal(1, 0),
     K_i::Distribution = Normal(1, 0),
     interaction::Symbol = :default,
+    u = fill(1, S),
 )
     @assert interaction ∈ [:default, :core]
     r = rand(r_i, S)
@@ -102,7 +109,7 @@ function Base.rand(
     if interaction == :core
         A = Diagonal(K) * A * Diagonal(1 ./ K)
     end
-    Community(A, r, K)
+    Community(A, r, K, u)
 end
 
 """
@@ -130,7 +137,7 @@ true
 
 See also [`relative_yield`](@ref)
 """
-abundance(c::Community) = -inv(c.A) * c.K
+abundance(c::Community) = -inv(c.A) * (c.u .* c.K)
 export abundance
 
 """
