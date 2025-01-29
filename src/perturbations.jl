@@ -74,6 +74,14 @@ function simulate_press(c::Community, K_new, tspan; kwargs...)
 end
 export simulate_press
 
+function simulate_press_u(c::Community, u_new, tspan; kwargs...)
+    N0 = abundance(c)
+    c_new = deepcopy(c)
+    c_new.u = u_new
+    solve(c_new, N0, tspan; kwargs...)
+end
+export simulate_press_u
+
 """
     simulate_noise(c::Community, noise!::Function, tspan)
 
