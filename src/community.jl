@@ -27,6 +27,16 @@ mutable struct Community
 end
 export Community
 
+"""
+    SublinearCommunity(A, r, m, k, B0)
+
+Create a community, governed by the sublinear model.
+A is the interaction matrix.
+r the vector of species growth rates.
+m the vector of species mortality rates.
+k the vectory of sublinear scaling.
+B0 the vector of lower bound on species densities.
+"""
 mutable struct SublinearCommunity
     A::AbstractMatrix # Interactions.
     r::AbstractVector # Growth rates.
