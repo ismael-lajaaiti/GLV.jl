@@ -27,6 +27,16 @@ mutable struct Community
 end
 export Community
 
+mutable struct SublinearCommunity
+    A::AbstractMatrix # Interactions.
+    r::AbstractVector # Growth rates.
+    m::AbstractVector # Mortality rates.
+    k::AbstractVector # Growth scaling.
+    B0::AbstractVector # Minimal densities.
+    SublinearCommunity(A, r, m, k, B0) = new(A, r, m, k, B0)
+end
+export SublinearCommunity
+
 function Community(A, r, K)
     u = fill(1, length(r))
     Community(A, r, K, u)
@@ -113,6 +123,68 @@ function Base.rand(
 end
 
 """
+    Base.rand(
+    ::Type{SublinearCommunity},
+    S::Int;
+    A_ij::Distribution = Normal(0, 1),
+    r_i::Distribution = Normal(1, 0),
+    m_i::Distribution = Normal(0.1, 0),
+    k_i::Distribution = Normal(0.75, 0),
+    B0_i::Distribution = Normal(0.01, 0),
+    interaction::Symbol = :default,
+
+)
+
+Generate a [`SublinearCommunity`](@ref), in which species follow a sublinear growth,
+with random parameters.
+"""
+function Base.rand(
+    ::Type{SublinearCommunity},
+    S::Int;
+    A_ij::Distribution = Normal(0, 1),
+    r_i::Distribution = Normal(1, 0),
+    m_i::Distribution = Normal(10^(-0.5), 0),
+    k_i::Distribution = Normal(0.75, 0),
+    B0_i::Distribution = Normal(0.01, 0),
+    interaction::Symbol = :default,
+)
+    @assert interaction ∈ [:default, :core]
+    r = rand(r_i, S)
+    m = rand(m_i, S)
+    k = rand(k_i, S)
+    B0 = rand(B0_i, S)
+    K = carrying_capacity(r, m, k, B0)
+    multivariate_dist = typeof(A_ij) <: MultivariateDistribution
+    if !multivariate_dist
+        A = rand(A_ij, S, S)
+    else
+        n = round(Int, S * (S - 1) / 2)
+        A_elements = rand(A_ij, n)
+        A = zeros(S, S)
+        k = 1
+        for i in 1:S, j in (i+1):S
+            A[i, j] = A_elements[1, k]
+            A[j, i] = A_elements[2, k]
+            k += 1
+        end
+    end
+    A[diagind(A)] .= 0
+    if interaction == :core
+        A = Diagonal(K) * A * Diagonal(1 ./ K)
+    end
+    SublinearCommunity(A, r, m, k, B0)
+end
+
+"""
+    carrying_capacity(c::SublinearCommunity)
+
+Compute species carrying capacities, that is, their abundance when alone.
+"""
+carrying_capacity(c::SublinearCommunity) = carrying_capacity(c.r, c.m, c.k, c.B0)
+carrying_capacity(r, m, k, B0) = B0 .* (r ./ m) .^ (1 ./ (1 .- k))
+export carrying_capacity
+
+"""
     abundance(c::Community)
 
 Compute the equilibrium abundance of species in community `c`.
@@ -168,6 +240,14 @@ See also [`abundance`](@ref).
 """
 relative_yield(c::Community) = abundance(c) ./ c.K
 export relative_yield
+
+relative_selfregulation(c::Community) = relative_yield(c)
+function relative_selfregulation(c::SublinearCommunity, B)
+    B_dfdB = (1 .- c.k) .* c.r .* c.B0 .^ (1 .- c.k) .* B .^ (c.k .- 1)
+    f0 = c.r .- c.m
+    B_dfdB ./ f0
+end
+export relative_selfregulation
 
 """
     core_interactions(c::Community)

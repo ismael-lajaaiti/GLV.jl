@@ -23,6 +23,12 @@ function simulate_pulse(c::Community, x, tspan; kwargs...)
     N_eq = abundance(c)
     solve(c, N_eq + x, tspan; kwargs...)
 end
+
+function simulate_pulse(c::SublinearCommunity, x, tspan; kwargs...)
+    K = carrying_capacity(c)
+    N_eq = solve(c, K, (0, 100_000))[end]
+    solve(c, N_eq + x, tspan; kwargs...)
+end
 export simulate_pulse
 
 """

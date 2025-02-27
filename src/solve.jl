@@ -35,6 +35,23 @@ function solve(c::Community, u0, tspan; kwargs...)
     DifferentialEquations.solve(prob; kwargs...)
 end
 
+function solve(c::SublinearCommunity, u0, tspan; kwargs...)
+    K = carrying_capacity(c)
+    f!(du, u, c, _) =
+        for i in eachindex(u)
+            u[i] < 0 && (u[i] = 0) # Species cannot have negative abundances.
+            du[i] =
+                u[i] * (
+                    c.r[i] * (c.B0[i] / u[i])^(1 - c.k[i]) + # Sublinear growth.
+                    -c.m[i] + # Mortality.
+                    (sum(c.A[i, :] .* u) / K[i]) # Interactions.
+                )
+            u[i] < c.B0[i] && (du[i] = 0) # Lower bound on growth.
+        end
+    prob = ODEProblem(f!, u0, tspan, c)
+    DifferentialEquations.solve(prob; kwargs...)
+end
+
 
 """
     solve(c::Community, u0, tspan, noise!::Function; kwargs...)
