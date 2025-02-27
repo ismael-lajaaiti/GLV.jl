@@ -285,6 +285,11 @@ function core_interactions(c::Community)
     A, K = c.A, c.K
     Diagonal(1 ./ K) * A * Diagonal(K)
 end
+function core_interactions(c::SublinearCommunity)
+    A = c.A
+    K = carrying_capacity(c)
+    Diagonal(1 ./ K) * A * Diagonal(K)
+end
 export core_interactions
 
 """
