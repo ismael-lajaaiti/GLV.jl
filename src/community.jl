@@ -220,6 +220,10 @@ true
 See also [`relative_yield`](@ref)
 """
 abundance(c::Community) = -inv(c.A) * (c.u .* c.K)
+function abundance(c::SublinearCommunity)
+    K = carrying_capacity(c)
+    solve(c, K, (0, 100_000))[end]
+end
 export abundance
 
 """
@@ -249,10 +253,12 @@ true
 See also [`abundance`](@ref).
 """
 relative_yield(c::Community) = abundance(c) ./ c.K
+relative_yield(c::SublinearCommunity) = abundance(c) ./ carrying_capacity(c)
 export relative_yield
 
 relative_selfregulation(c::Community) = relative_yield(c)
-function relative_selfregulation(c::SublinearCommunity, B)
+function relative_selfregulation(c::SublinearCommunity)
+    B = abundance(c)
     B_dfdB = (1 .- c.k) .* c.r .* c.B0 .^ (1 .- c.k) .* B .^ (c.k .- 1)
     f0 = c.r .- c.m
     B_dfdB ./ f0
