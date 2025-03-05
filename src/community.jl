@@ -20,9 +20,10 @@ mutable struct Community
     r::AbstractVector # Growth rates.
     K::AbstractVector # Carrying capacities.
     u::AbstractVector # Can species grow by themselves.
-    function Community(A, r, K, u)
-        @assert size(A, 1) == size(A, 2) == length(r) == length(K) == length(u)
-        new(A, r, K, u)
+    θ::AbstractVector # Parameter of θ-logistic.
+    function Community(A, r, K, u, θ)
+        @assert size(A, 1) == size(A, 2) == length(r) == length(K) == length(u) == length(θ)
+        new(A, r, K, u, θ)
     end
 end
 export Community
@@ -49,7 +50,8 @@ export SublinearCommunity
 
 function Community(A, r, K)
     u = fill(1, length(r))
-    Community(A, r, K, u)
+    θ = fill(1, length(r))
+    Community(A, r, K, u, θ)
 end
 
 """
@@ -107,6 +109,7 @@ function Base.rand(
     K_i::Distribution = Normal(1, 0),
     interaction::Symbol = :default,
     u = fill(1, S),
+    θ = fill(1, S),
 )
     @assert interaction ∈ [:default, :core]
     r = rand(r_i, S)
@@ -129,7 +132,7 @@ function Base.rand(
     if interaction == :core
         A = Diagonal(K) * A * Diagonal(1 ./ K)
     end
-    Community(A, r, K, u)
+    Community(A, r, K, u, θ)
 end
 
 """
@@ -219,7 +222,15 @@ true
 
 See also [`relative_yield`](@ref)
 """
-abundance(c::Community) = -inv(c.A) * (c.u .* c.K)
+function abundance(c::Community; t_end = 100_000)
+    logistic = all(c.θ .== 1)
+    if logistic # Can be solved analytically.
+        Beq = -inv(c.A) * (c.u .* c.K)
+    else
+        Beq = solve(c, c.K, (0, t_end))[end]
+    end
+    Beq
+end
 function abundance(c::SublinearCommunity)
     K = carrying_capacity(c)
     solve(c, K, (0, 100_000))[end]
@@ -256,7 +267,7 @@ relative_yield(c::Community) = abundance(c) ./ c.K
 relative_yield(c::SublinearCommunity) = abundance(c) ./ carrying_capacity(c)
 export relative_yield
 
-relative_selfregulation(c::Community) = relative_yield(c)
+relative_selfregulation(c::Community) = (abundance(c) ./ c.K) .^ c.θ
 function relative_selfregulation(c::SublinearCommunity)
     B = abundance(c)
     B_dfdB = (1 .- c.k) .* c.r .* c.B0 .^ (1 .- c.k) .* B .^ (c.k .- 1)
