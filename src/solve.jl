@@ -28,8 +28,11 @@ See also [`Community`](@ref).
 function solve(c::Community, u0, tspan; kwargs...)
     f!(du, u, c, _) =
         for i in eachindex(u)
-            u[i] < 0 && (u[i] = 0) # Species cannot have negative abundances.
-            du[i] = c.r[i] * u[i] * (c.u[i] + sum(c.A[i, :] .* u) / c.K[i])
+            u[i] < 0 && (u[i] = 0)
+            du[i] =
+                c.r[i] *
+                u[i] *
+                (c.u[i] + (u[i]^(c.θ[i] - 1) / c.K[i]^c.θ[i]) * sum(c.A[i, :] .* u))
         end
     prob = ODEProblem(f!, u0, tspan, c)
     DifferentialEquations.solve(prob; kwargs...)
@@ -73,13 +76,13 @@ solve(c, u0, tspan, white_noise!)
 ```
 """
 function solve(c::Community, u0, tspan, noise!::Function; kwargs...)
-    f!(du, u, c, _) =
+    f!(du, u, c, _) = #!TODO: Fix
         for i in eachindex(u)
             u[i] < 0 && (u[i] = 0)
             du[i] =
                 c.r[i] *
                 u[i] *
-                (1 + (u[i]^(c.θ[i] - 1) / c.K[i]^c.θ[i]) * sum(c.A[i, :] .* u))
+                (c.u[i] + (u[i]^(c.θ[i] - 1) / c.K[i]^c.θ[i]) * sum(c.A[i, :] .* u))
         end
     prob = SDEProblem(f!, noise!, u0, tspan, c)
     DifferentialEquations.solve(prob; kwargs...)
