@@ -76,7 +76,7 @@ solve(c, u0, tspan, white_noise!)
 ```
 """
 function solve(c::Community, u0, tspan, noise!::Function; kwargs...)
-    f!(du, u, c, _) = #!TODO: Fix
+    f!(du, u, c, _) =
         for i in eachindex(u)
             u[i] < 0 && (u[i] = 0)
             du[i] =
