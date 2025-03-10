@@ -28,11 +28,15 @@ See also [`Community`](@ref).
 function solve(c::Community, u0, tspan; kwargs...)
     f!(du, u, c, _) =
         for i in eachindex(u)
-            u[i] < 0 && (u[i] = 0)
-            du[i] =
-                c.r[i] *
-                u[i] *
-                (c.u[i] + (u[i]^(c.θ[i] - 1) / c.K[i]^c.θ[i]) * sum(c.A[i, :] .* u))
+            if u[i] < 1e-8
+                u[i] = 0
+                du[i] = 0
+            else
+                du[i] =
+                    c.r[i] *
+                    u[i] *
+                    (c.u[i] + (u[i]^(c.θ[i] - 1) / c.K[i]^c.θ[i]) * sum(c.A[i, :] .* u))
+            end
         end
     prob = ODEProblem(f!, u0, tspan, c)
     DifferentialEquations.solve(prob; kwargs...)
