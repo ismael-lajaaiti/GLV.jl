@@ -32,10 +32,15 @@ function solve(c::Community, u0, tspan; kwargs...)
             if u[i] < 1e-12
                 du[i] = 0
             else
+                dfdB = (u[i] / c.K[i])^c.θ[i] / u[i]
                 du[i] =
-                    c.r[i] / c.θ[i] *
                     u[i] *
-                    (c.u[i] + (u[i]^(c.θ[i] - 1) / c.K[i]^c.θ[i]) * sum(c.A[i, :] .* u))
+                    c.r[i] *
+                    (
+                        c.u[i] / c.θ[i] + # Intrinsic growth/mortality.
+                        c.A[i, i] * dfdB * u[i] / c.θ[i] + # Self-regulation
+                        dfdB * sum(c.A[i, j] * u[j] for j in eachindex(u) if j != i) # Interactions.
+                    )
             end
         end
     prob = ODEProblem(f!, u0, tspan, c)
