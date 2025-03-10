@@ -39,7 +39,7 @@ function solve(c::Community, u0, tspan; kwargs...)
                     (
                         c.u[i] / c.θ[i] + # Intrinsic growth/mortality.
                         c.A[i, i] * dfdB * u[i] / c.θ[i] + # Self-regulation
-                        sum(c.A[i, j] * u[j] for j in eachindex(u) if j != i) # Interactions.
+                        sum(c.A[i, j] * u[j] for j in eachindex(u) if j != i) ./ c.K[i] # Interactions.
                     )
             end
         end
