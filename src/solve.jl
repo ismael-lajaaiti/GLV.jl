@@ -33,7 +33,7 @@ function solve(c::Community, u0, tspan; kwargs...)
                 du[i] = 0
             else
                 du[i] =
-                    c.r[i] *
+                    c.r[i] / c.θ[i] *
                     u[i] *
                     (c.u[i] + (u[i]^(c.θ[i] - 1) / c.K[i]^c.θ[i]) * sum(c.A[i, :] .* u))
             end
