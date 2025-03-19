@@ -263,7 +263,7 @@ true
 
 See also [`abundance`](@ref).
 """
-relative_yield(c::Community) = abundance(c) ./ c.K
+relative_yield(c::Community) = abundance(c) ./ (c.K .* c.u)
 relative_yield(c::SublinearCommunity) = abundance(c) ./ carrying_capacity(c)
 export relative_yield
 
